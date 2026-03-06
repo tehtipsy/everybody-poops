@@ -5,55 +5,109 @@ from dummy_data import get_dummy_logs
 
 # Config
 DATA_DIR  = os.path.dirname(os.path.abspath(__file__))
-JSON_FILE = os.path.join(DATA_DIR, "logs.json")
-CSV_FILE  = os.path.join(DATA_DIR, "logs.csv")
+
+# This will hold the in-memory logs list, initialized from load_logs()
+logs = []  
+
+def _build_file_path(filename, extension):
+    """
+    Build a file path in the project data directory.
+    Adds the expected extension if the user omitted it.
+    """
+    cleaned_name = filename.strip()
+    if not cleaned_name:
+        raise ValueError("Filename cannot be empty.")
+
+    if not cleaned_name.lower().endswith(f".{extension}"):
+        cleaned_name = f"{cleaned_name}.{extension}"
+
+    return os.path.join(DATA_DIR, cleaned_name)
+
+
+def _load_json_logs(file_path):
+    with open(file_path, "r") as f:
+        return json.load(f)
+
+
+def _load_csv_logs(file_path):
+    with open(file_path, "r") as f:
+        reader = csv.DictReader(f)
+        data = [row for row in reader]
+        for entry in data:
+            entry["id"] = int(entry["id"])
+        return data
 
 # Load
 def load_logs():
     """
-    Load logs from JSON, CSV file, 
+    Load logs from a user-selected JSON or CSV file,
     or fall back to dummy data.
     """
-    if os.path.exists(JSON_FILE):
-        with open(JSON_FILE, "r") as f:
-            print(f"[DAL] Loaded logs from {JSON_FILE}")
-            return json.load(f)
+    while True:
+        choice = input("\nChoose import format (1 for JSON, 2 for CSV, 0 for dummy data): ").strip()
 
-    # If no JSON file, try CSV
-    if os.path.exists(CSV_FILE):
-        with open(CSV_FILE, "r") as f:
-            reader = csv.DictReader(f)
-            data = [row for row in reader]
-            # csv reads everything as strings — convert id back to int
-            for entry in data:
-                entry["id"] = int(entry["id"])
-            print(f"[DAL] Loaded logs from {CSV_FILE}")
-            return data
+        if choice == "0":
+            print("[DAL] Using dummy data.")
+            choice = input("[DAL] Append dummy data or replace existing logs? (a/r): ").strip().lower()
+            if choice == "a":
+                return get_dummy_logs() + logs
+            elif choice == "r":
+                return get_dummy_logs()
 
-    print("[DAL] No saved file found — using dummy data.")
-    return get_dummy_logs()
+        if choice not in ["1", "2"]:
+            print("Invalid choice. Please try again.")
+            continue
 
-# Save ---
-def save_logs_json():
+        filename = input("Enter file name (without or with extension): ").strip()
+        if not filename:
+            print("Filename cannot be empty. Please try again.")
+            continue
+
+        extension = "json" if choice == "1" else "csv"
+        file_path = _build_file_path(filename, extension)
+
+        if not os.path.exists(file_path):
+            print(f"[DAL] File not found: {file_path}")
+            continue
+
+        try:
+            if choice == "1":
+                data = _load_json_logs(file_path)
+            else:
+                data = _load_csv_logs(file_path)
+        except (OSError, ValueError, json.JSONDecodeError) as error:
+            print(f"[DAL] Failed to load file: {error}")
+            continue
+
+        print(f"[DAL] Loaded logs from {file_path}")
+        return data
+
+# Save
+def save_logs_json(filename):
     """
     Export the current list to a JSON file.
     """
-    with open(JSON_FILE, "w") as f:
-        json.dump(logs, f, indent=2)
-    print(f"[DAL] Saved {len(logs)} entries to {JSON_FILE}")
+    file_path = _build_file_path(filename, "json")
 
-def save_logs_csv():
+    with open(file_path, "w") as f:
+        json.dump(logs, f, indent=2)
+    print(f"[DAL] Saved {len(logs)} entries to {file_path}")
+
+def save_logs_csv(filename):
     """
     Export the current logs list to a CSV file.
     """
     if not logs:
         print("[DAL] Nothing to save.")
         return
-    with open(CSV_FILE, "w", newline="") as f:
+
+    file_path = _build_file_path(filename, "csv")
+
+    with open(file_path, "w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=logs[0].keys())
         writer.writeheader()
         writer.writerows(logs)
-    print(f"[DAL] Saved {len(logs)} entries to {CSV_FILE}")
+    print(f"[DAL] Saved {len(logs)} entries to {file_path}")
 
 # Helper - Next ID generator
 def next_id():

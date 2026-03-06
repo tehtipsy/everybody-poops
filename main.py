@@ -1,7 +1,3 @@
-from edit import edit_entry
-from log import log_entry
-from export import export_history
-from view import view_history
 from auth import auth_menu, logout
 
 def show_main_menu():
@@ -13,9 +9,16 @@ def show_main_menu():
     print("2. View Entry History")
     print("3. Edit Entry")
     print("4. Export History")
+    print("5. Load History")
     print("-----------------------------------")
 
 def main():
+    # Import from modules in main loop to avoid loading data before login 
+    from edit import edit_entry
+    from log import log_entry
+    from export import export_history
+    from view import view_history, load_history
+
     while True:
         show_main_menu()
         choice = input("\nChoose Option: ")
@@ -32,8 +35,11 @@ def main():
         elif choice == '4':
             # Export history
             export_history()
+        elif choice == '5':
+            # Load history
+            load_history()
         elif choice == '0':
-            # Exit
+            # Exit or logout
             choice = input("Do you want to exit or logout? (e/l): ")
             if choice.lower() == 'e':
                 print("Goodbye!")

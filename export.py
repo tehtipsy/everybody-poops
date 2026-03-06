@@ -13,9 +13,14 @@ def export_history():
             print("Invalid choice. Please try again.")
             continue
 
+        filename = input("Enter file name (without or with extension): ").strip()
+        if not filename:
+            print("Filename cannot be empty. Please try again.")
+            continue
+
         print("\nExporting history...")
         if choice == "1":
-            save_logs_json()
+            save_logs_json(filename)
         else:
-            save_logs_csv()
+            save_logs_csv(filename)
         break

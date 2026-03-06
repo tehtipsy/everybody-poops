@@ -1,4 +1,4 @@
-from dal import logs
+from dal import logs, load_logs
 
 def print_rows(rows):
     """
@@ -23,3 +23,14 @@ def view_history():
         if choice.lower() == 'y':
             break
         print("Invalid choice. Please try again.")
+
+def load_history():
+    """
+    Loads history from a file and updates the in-memory logs.
+    """
+    print("\nLoading history...")
+    new_logs = load_logs()
+    if new_logs is not None:
+        logs.clear()
+        logs.extend(new_logs)
+        print(f"Loaded {len(new_logs)} entries into history.")
