@@ -22,7 +22,7 @@ def update_entry(entry):
     new_notes = input(f"Enter new notes (current: {entry['notes']}, press enter to skip): ")
     if new_notes:
         entry["notes"] = new_notes
-    
+
     print("Entry updated successfully!")
 
 def edit_entry():

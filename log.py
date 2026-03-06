@@ -32,18 +32,19 @@ def log_entry():
     while True:
         print("Logging a new entry...")
         # Save Entry with auto-generated ID and timestamp
-                
+
         # Save the entry to the history
         entry = create_log_entry()
         if entry is None:
-            return log_entry()  # Retry if entry creation failed
-        
+            # Retry if entry creation failed
+            return log_entry()  
+
         logs.append(entry)
         print("\n\nEntry logged successfully!")
-        
+
         choice = input("\nLog another entry? (y/n): ")
         if choice.lower() != 'y':
             break
-        
-        # else, loop again to log another entry
+
+        # Else, loop again to log another entry
         return log_entry()

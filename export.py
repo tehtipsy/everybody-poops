@@ -12,11 +12,10 @@ def export_history():
         if choice not in ["1", "2"]:
             print("Invalid choice. Please try again.")
             continue
-        
+
         print("\nExporting history...")
         if choice == "1":
             save_logs_json()
         else:
             save_logs_csv()
         break
-
