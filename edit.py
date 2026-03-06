@@ -27,14 +27,14 @@ def update_entry(entry):
 
 def edit_entry():
     """
-    Allows the user to edit an existing poop entry.
+    Allows the user to edit an existing entry.
     Asks the user for the ID of the entry they want to edit, 
     checks if it exists, 
     and then allows them to update the details of that entry.
     """
     while True:
         id = int(input("Enter the ID of the entry you want to edit: "))
-        
+
         # Check if the entry exists
         entry = find_entry_by_id(id)
 
@@ -44,16 +44,20 @@ def edit_entry():
             return edit_entry()  
 
         print(f"Editing entry: {entry}")
-        
-        early_exit = input("Do you want to edit this entry? (y/n): ")
-        if early_exit.lower() != 'y':
-            print("Edit cancelled.")
-            break
-        
+
+        retry = input("\nDo you want to:\n - edit this entry (y or any other input)\n - try another ID (n)\n - return to main menu (e)\n(y/n/e): ")
+        if retry.lower() == 'n':
+            return edit_entry()
+        elif retry.lower() == 'e':
+            print("Returning to menu.")
+            return
+
+        print(f"\nProceeding to edit entry with ID: {entry['id']}\n")
+
         # Update the entry details
         update_entry(entry)
 
         exit = input("\nDo you want to return to the menu? (y/n): ")
-        if exit.lower() != 'y':
-            print("Edit cancelled.")
+        if exit.lower() == 'y':
+            print("Returning to menu.")
             break

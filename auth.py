@@ -76,6 +76,13 @@ def login():
     print(f"\nWelcome back, {username}!")
     return username
 
+def logout():
+    """
+    Logout the current user.
+    """
+    print("Logged out successfully.")
+    return None
+
 def display_auth_menu():
     """
     Display the "login or register" menu.

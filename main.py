@@ -2,7 +2,7 @@ from edit import edit_entry
 from log import log_entry
 from export import export_history
 from view import view_history
-from auth import auth_menu
+from auth import auth_menu, logout
 
 def show_main_menu():
     print("\n\n\n------------MAIN--MENU-------------")
@@ -34,10 +34,17 @@ def main():
             export_history()
         elif choice == '0':
             # Exit
-            choice = input("Are you sure you want to exit? (y/n): ")
-            if choice.lower() == 'y':
+            choice = input("Do you want to exit or logout? (e/l): ")
+            if choice.lower() == 'e':
                 print("Goodbye!")
                 break
+            # Logout and return to auth menu
+            elif choice.lower() == 'l':
+                logout()
+                user = auth_menu()
+                if not user:
+                    print("Goodbye!")
+                    break
         else:
             print("\nInvalid choice. Please try again.")
 
