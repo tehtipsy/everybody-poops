@@ -1,5 +1,5 @@
 from datetime import datetime
-from dal import logs, next_id
+from dal import logs, new_unique_id
 
 def create_log_entry():
     """
@@ -16,7 +16,7 @@ def create_log_entry():
     notes = input("Enter any notes (optional): ")
 
     entry = {
-        "id": next_id(),
+        "id": new_unique_id(),
         "type": type,
         "notes": notes,
         "timestamp": str(datetime.now())

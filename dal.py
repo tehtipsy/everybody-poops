@@ -1,6 +1,7 @@
 import json
 import csv
 import os
+import secrets
 from dummy_data import get_dummy_logs
 
 # Config
@@ -26,7 +27,10 @@ def _build_file_path(filename, extension):
 
 def _load_json_logs(file_path):
     with open(file_path, "r") as f:
-        return json.load(f)
+        data = json.load(f)
+        for entry in data:
+            entry["id"] = str(entry["id"]).upper()
+        return data
 
 
 def _load_csv_logs(file_path):
@@ -34,7 +38,7 @@ def _load_csv_logs(file_path):
         reader = csv.DictReader(f)
         data = [row for row in reader]
         for entry in data:
-            entry["id"] = int(entry["id"])
+            entry["id"] = str(entry["id"]).upper()
         return data
 
 # Load
@@ -50,7 +54,7 @@ def load_logs():
             print("[DAL] Using dummy data.")
             choice = input("[DAL] Append dummy data or replace existing logs? (a/r): ").strip().lower()
             if choice == "a":
-                return get_dummy_logs() + logs
+                return logs + get_dummy_logs()
             elif choice == "r":
                 return get_dummy_logs()
 
@@ -79,6 +83,10 @@ def load_logs():
             print(f"[DAL] Failed to load file: {error}")
             continue
 
+        if len(logs) > 0:
+            choice = input("[DAL] Append loaded data to existing logs? (y/n): ").strip().lower()
+            if choice == "y":
+                return logs + data
         print(f"[DAL] Loaded logs from {file_path}")
         return data
 
@@ -109,14 +117,20 @@ def save_logs_csv(filename):
         writer.writerows(logs)
     print(f"[DAL] Saved {len(logs)} entries to {file_path}")
 
-# Helper - Next ID generator
-def next_id():
+# Helper - 4-character hex ID generator
+def new_unique_id():
     """
-    Return the next available ID.
+    Return a unique 4-character hexadecimal ID string.
     """
-    if not logs:
-        return 1
-    return max(int(entry["id"]) for entry in logs) + 1
+    existing_ids = {str(entry["id"]) for entry in logs}
+
+    if len(existing_ids) >= 16 ** 4:
+        raise ValueError("No 4-character hexadecimal IDs remaining.")
+
+    while True:
+        new_id = f"{secrets.randbelow(16 ** 4):04X}"
+        if new_id not in existing_ids:
+            return new_id
 
 # The shared logs list (single source of truth)
 logs = load_logs()

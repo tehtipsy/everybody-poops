@@ -33,7 +33,11 @@ def edit_entry():
     and then allows them to update the details of that entry.
     """
     while True:
-        id = int(input("Enter the ID of the entry you want to edit: "))
+        id = input("Enter the 4-character hex ID of the entry you want to edit: ").strip().upper()
+
+        if not id:
+            print("ID cannot be empty.")
+            continue
 
         # Check if the entry exists
         entry = find_entry_by_id(id)
