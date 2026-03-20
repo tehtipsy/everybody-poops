@@ -13,13 +13,11 @@ def create_log_entry():
         print("Invalid type. Entry not created.")
         return None
 
-    notes = input("Enter any notes (optional): ")
-
     # added a small check if the user selected number 2, if they did ask them 
     # for number 2 size, and display a message if the size is within the worldwide average or not
     size = 0
     if type == "2":
-       raw_size = int(input("Please enter the diameter of your type 2 in cm (optional): "))
+       raw_size = input("Type 2 selected, please enter the diameter of your type 2 in cm (optional): ")
        if raw_size == "":
            size=0
        else:
@@ -28,6 +26,9 @@ def create_log_entry():
            except ValueError:
                size = 0
     
+    notes = input("Enter any notes (optional): ")
+
+    # printing messages after enter any notes for consisitency 
     if 2 <= size <= 4:
         print ("\n\nYour number 2 diameter is within the worldwide average")
     elif size > 4:
