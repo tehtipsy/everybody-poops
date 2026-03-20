@@ -1,0 +1,21 @@
+My Repo
+  First Feature:
+    Compare Diameter ro Worldwide average
+
+  First PR URL: https://github.com/tehtipsy/everybody-poops/pull/4
+
+First Repo I Helped:
+  Repo URL
+  Feature implemented
+  File(s) modified
+  Function(s) added
+  Branch name
+  PR URL
+
+Second Repo I Helped:
+  Repo URL
+  Feature implemented
+  File(s) modified
+  Function(s) added
+  Branch name
+  PR URL
