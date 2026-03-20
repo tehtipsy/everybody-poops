@@ -15,6 +15,27 @@ def create_log_entry():
 
     notes = input("Enter any notes (optional): ")
 
+    # added a small check if the user selected number 2, if they did ask them 
+    # for number 2 size, and display a message if the size is within the worldwide average or not
+    size = 0
+    if type == "2":
+       raw_size = int(input("Please enter the diameter of your type 2 in cm (optional): "))
+       if raw_size == "":
+           size=0
+       else:
+           try:
+               size = int(raw_size)
+           except ValueError:
+               size = 0
+    
+    if 2 <= size <= 4:
+        print ("\n\nYour number 2 diameter is within the worldwide average")
+    elif size > 4:
+        print ("\n\nYour number 2 diameter is bigger then worldwide average, well done!")
+    elif size < 2 and size != 0:
+        print ("\n\nYour number 2 diameter is smaller then worldwide average, ):")
+    
+
     entry = {
         "id": new_unique_id(),
         "type": type,
