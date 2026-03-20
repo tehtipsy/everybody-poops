@@ -1,8 +1,10 @@
 My Repo
+  Repo URL: https://github.com/tehtipsy/everybody-poops
+    
   First Feature:
-    Compare Diameter ro Worldwide average
-
-  First PR URL: https://github.com/tehtipsy/everybody-poops/pull/4
+    Compare Diameter to Worldwide Average
+    PR URL: https://github.com/tehtipsy/everybody-poops/pull/4
+    Issue URL: https://github.com/tehtipsy/everybody-poops/issues/2
 
 First Repo I Helped:
   Repo URL
