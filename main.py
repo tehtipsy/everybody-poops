@@ -1,4 +1,5 @@
 from auth import auth_menu, logout
+from init import init_main_menu as init_main_menu
 
 def show_main_menu():
     print("\n\n\n------------MAIN--MENU-------------")
@@ -13,11 +14,8 @@ def show_main_menu():
     print("-----------------------------------")
 
 def main():
-    # Import from modules in main loop to avoid loading data before login 
-    from edit import edit_entry
-    from log import log_entry
-    from export import export_history
-    from view import view_history, load_history
+
+    edit_entry, log_entry, export_history, view_history, load_history = init_main_menu().values()
 
     while True:
         show_main_menu()
