@@ -4,6 +4,10 @@ def print_rows(rows):
     """
     Helper function to print a list of log entries in a readable format.
     """
+    print("\nViewing history...\n")
+    if not rows:
+        print("No entries found.")
+        return
     for row in rows:
         print(f" - ID: {row['id']}, Type: {row['type']}, Notes: {row['notes']}, Timestamp: {row['timestamp']}")
 
@@ -11,13 +15,36 @@ def view_history():
     """
     Displays the history of entries to the user.
     """
-    while True:    
-        print("\nViewing history...\n")
-        if not logs:
-            print("No entries found.")
-            return
+    while True:
+        filter = input("""Choose a filter:
+        1. All
+        2. Poop
+        3. Pee
+        4. Filter by notes
+        """)  
 
-        print_rows(logs)
+        logs_filtered = []
+        if filter == "1":
+            print_rows(logs)
+        elif filter == "2":
+            for log in logs:
+                if log["type"] == "2":
+                    logs_filtered.append(log)
+            print_rows(logs_filtered)
+        elif filter == "3":
+            for log in logs:
+                if log["type"] == "1":
+                    logs_filtered.append(log)
+            print_rows(logs_filtered)
+        elif filter == "4":
+            notes = input("Enter notes: ")
+            for log in logs:
+                if notes in log["notes"]:
+                    logs_filtered.append(log)
+            print_rows(logs_filtered)
+        else:
+            print("Invalid filter. Please try again.")
+            continue
 
         choice = input("\nReturn to menu? (y/n): ")
         if choice.lower() == 'y':
