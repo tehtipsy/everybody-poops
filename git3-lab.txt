@@ -15,9 +15,9 @@ First Repo I Helped:
   PR URL: https://github.com/Swagarot/Subscription-Manager/pull/3
 
 Second Repo I Helped:
-  Repo URL
-  Feature implemented
-  File(s) modified
-  Function(s) added
-  Branch name
-  PR URL
+  Repo URL: https://github.com/Matan-Abir/DnD-Character-Manager-DevOps-course-reqs-
+  Feature implemented: Display Menus Composition Refactor
+  File(s) modified: Most of them
+  Function(s) added: None
+  Branch name: tehtipsy:feature/main-menu-config
+  PR URLL: https://github.com/Matan-Abir/DnD-Character-Manager-DevOps-course-reqs-/pull/2
