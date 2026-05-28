@@ -9,6 +9,8 @@ from urllib.parse import parse_qs, urlparse
 from dal import logs, new_unique_id
 from dummy_data import get_dummy_logs
 
+VALID_TYPES = {"1", "2"}
+
 
 def _render_page(message=""):
     rows = []
@@ -136,7 +138,7 @@ class EverybodyPoopsHandler(BaseHTTPRequestHandler):
 
         if path == "/log":
             type_value = form.get("type", [""])[0]
-            if type_value not in {"1", "2"}:
+            if type_value not in VALID_TYPES:
                 self._send_html(_render_page("Invalid type. Use 1 or 2."), status=400)
                 return
             logs.append(
@@ -154,9 +156,12 @@ class EverybodyPoopsHandler(BaseHTTPRequestHandler):
             target_id = form.get("id", [""])[0].strip()
             new_type = form.get("type", [""])[0]
             new_notes = form.get("notes", [""])[0]
+            if not target_id:
+                self._send_html(_render_page("Entry ID is required."), status=400)
+                return
             for entry in logs:
-                if str(entry.get("id", "")).upper() == target_id.upper():
-                    if new_type in {"1", "2"}:
+                if str(entry.get("id", "")) == target_id:
+                    if new_type in VALID_TYPES:
                         entry["type"] = new_type
                     if new_notes:
                         entry["notes"] = new_notes

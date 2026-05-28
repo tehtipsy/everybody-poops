@@ -51,6 +51,30 @@ class WebAppTests(unittest.TestCase):
         self.assertIn("id,type,notes,timestamp", csv_text)
         self.assertIn("export test", csv_text)
 
+    def test_edit_entry_updates_type_and_notes(self):
+        self._post("/log", {"type": "1", "notes": "before"})
+        entry_id = logs[0]["id"]
+        self._post("/edit", {"id": entry_id, "type": "2", "notes": "after"})
+        response = urlopen(f"{self.base_url}/history")
+        payload = json.loads(response.read().decode("utf-8"))
+        self.assertEqual(payload[0]["type"], "2")
+        self.assertEqual(payload[0]["notes"], "after")
+
+    def test_load_dummy_replaces_existing_entries(self):
+        self._post("/log", {"type": "1", "notes": "will be replaced"})
+        self._post("/load-dummy", {})
+        response = urlopen(f"{self.base_url}/history")
+        payload = json.loads(response.read().decode("utf-8"))
+        self.assertEqual(len(payload), 3)
+
+    def test_export_json_sets_attachment_header(self):
+        self._post("/log", {"type": "1", "notes": "json export"})
+        response = urlopen(f"{self.base_url}/export.json")
+        disposition = response.headers.get("Content-Disposition")
+        self.assertEqual(disposition, 'attachment; filename="everybody-poops.json"')
+        payload = json.loads(response.read().decode("utf-8"))
+        self.assertEqual(payload[0]["notes"], "json export")
+
 
 if __name__ == "__main__":
     unittest.main()
