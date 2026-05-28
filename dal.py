@@ -133,4 +133,5 @@ def new_unique_id():
             return new_id
 
 # The shared logs list (single source of truth)
-logs = load_logs()
+# Keep startup non-interactive for web-server usage.
+logs = []
