@@ -151,11 +151,11 @@ class EverybodyPoopsHandler(BaseHTTPRequestHandler):
             return
 
         if path == "/edit":
-            target_id = form.get("id", [""])[0].upper()
+            target_id = form.get("id", [""])[0].strip()
             new_type = form.get("type", [""])[0]
             new_notes = form.get("notes", [""])[0]
             for entry in logs:
-                if str(entry.get("id", "")).upper() == target_id:
+                if str(entry.get("id", "")).upper() == target_id.upper():
                     if new_type in {"1", "2"}:
                         entry["type"] = new_type
                     if new_notes:

@@ -21,6 +21,7 @@ class WebAppTests(unittest.TestCase):
         self.server.shutdown()
         self.server.server_close()
         self.thread.join(timeout=2)
+        self.assertFalse(self.thread.is_alive(), "Server thread did not stop cleanly.")
         logs.clear()
 
     def _post(self, path, data):
