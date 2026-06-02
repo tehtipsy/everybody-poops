@@ -15,7 +15,7 @@ APP_DIR="/opt/app"
 # Pull repo from S3
 rm -rf $APP_DIR
 mkdir -p $APP_DIR
-aws s3 sync $S3_URI $APP_DIR
+aws s3 sync $S3_URI $APP_DIR --no-sign-request
 
 cd $APP_DIR
 
