@@ -9,7 +9,7 @@ apt-get upgrade -y
 apt-get install -y nginx python3 python3-pip awscli
 
 # Variables (CHANGE THIS)
-S3_URI="s3://website-storage-devops-demo-201841003492-us-east-1-an/everybody-poops"
+S3_URI="s3://website-storage-devops-demo-201841003492-us-east-1-an/everybody-poops-server"
 APP_DIR="/opt/app"
 
 # Pull repo from S3
