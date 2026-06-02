@@ -6,15 +6,16 @@ apt-get update -y
 apt-get upgrade -y
 
 # Install dependencies
-apt-get install -y nginx git python3 python3-pip
+apt-get install -y nginx python3 python3-pip awscli
 
 # Variables (CHANGE THIS)
-REPO_URL="https://github.com/tehtipsy/everybody-poops.git"
+S3_URI="s3://your-bucket-name/everybody-poops"
 APP_DIR="/opt/app"
 
-# Clone repo
+# Pull repo from S3
 rm -rf $APP_DIR
-git clone $REPO_URL $APP_DIR
+mkdir -p $APP_DIR
+aws s3 sync $S3_URI $APP_DIR
 
 cd $APP_DIR
 
